@@ -1,18 +1,21 @@
+from __future__ import print_function
+
 import tensorflow as tf
-
 import numpy as np
-
 from models import *
-
 import h5py
+
+# -----------------------------
 
 LOSS = 'VGG54' # 'MSE', 'WGAN'
 
+# *** Please update the path!!!
 f = h5py.File('/YOUR/PATH/TO/TRAINING.hdf5', 'r')
 data = f.get('input')
 label = f.get('label')
 f.close()
 
+# *** Please update the path!!!
 f = h5py.File('/YOUR/PATH/TO/TESTING.hdf5', 'r')
 test_data = f.get('input')
 test_label = f.get('label')
@@ -48,7 +51,7 @@ with tf.variable_scope('discriminator_model') as scope:
     interpolates = tf.reshape(interpolates, [batch_size, output_width, output_height, 1])
     gradients = tf.gradients(discriminator_model(interpolates), [interpolates])[0]
 
-gen_cost = -tf.reduce_mean(disc_fake)    # generator loss
+gen_cost = -1.0 * tf.reduce_mean(disc_fake)    # generator loss
 w_distance = tf.reduce_mean(disc_fake) - tf.reduce_mean(disc_real)  # discriminator loss
 
 slopes = tf.sqrt(tf.reduce_sum(tf.square(gradients), axis=1))
@@ -94,7 +97,9 @@ sess = tf.Session()
 sess.run(tf.global_variables_initializer())
 
 # load vgg weights
-print "Initialize VGG network ... "
+print("Initialize VGG network ... ")
+
+# *** Please update the path!!!
 weights = np.load('/YOUR/PATH/TO/vgg19.npy', encoding='latin1').item()
 keys = sorted(weights.keys())
 layers = ['conv1_1', 'conv1_2', 'conv2_1', 'conv2_2',
@@ -103,7 +108,7 @@ layers = ['conv1_1', 'conv1_2', 'conv2_1', 'conv2_2',
         'conv5_1', 'conv5_2', 'conv5_3', 'conv5_4']
 
 for i, k in enumerate(layers):
-    print i, k, weights[k][0].shape, weights[k][1].shape
+    print(i, k, weights[k][0].shape, weights[k][1].shape)
     sess.run(vgg_params[2*i].assign(weights[k][0]))
     sess.run(vgg_params[2*i+1].assign(weights[k][1]))
 
@@ -113,7 +118,7 @@ num_batches = data.shape[0] // batch_size
 saver = tf.train.Saver()
 
 
-print "Start training ... "
+print("Start training ... ")
 for iteration in range(num_epoch):
 
     i = 0
@@ -135,7 +140,7 @@ for iteration in range(num_epoch):
         _gen_cost, _ = sess.run([gen_cost, gen_train_op], feed_dict={X: batch_data, real_data: batch_label})
         print('Epoch: %d - num_batch: %d - gen_loss: %.6f - disc_loss: %.6f - w_distance: %.6f' % (iteration, i+1, _gen_cost, _disc_cost, _w_distance))
 
-       i = i + 1
+        i = i + 1
     if LOSS == 'VGG54':
         saver.save(sess, './Network/wgan-vgg54/wgan_vgg54_'+repr(iteration)+'.ckpt')
     elif LOSS == 'MSE':

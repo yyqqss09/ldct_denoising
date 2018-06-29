@@ -1,18 +1,21 @@
+from __future__ import print_function
+
 import tensorflow as tf
-
 import numpy as np
-
 from models import *
-
 import h5py
+
+# -----------------------------
 
 LOSS = 'VGG54' # 'MSE'  # choose VGG-LOSS or MSE-LOSS
 
+# *** Please update the path!!!
 f = h5py.File('/YOUR/PATH/TO/TRAINING.hdf5', 'r')
 data = f.get('input')
 label = f.get('label')
 f.close()
 
+# *** Please update the path!!!
 f = h5py.File('/YOUR/PATH/TO/TESTING.hdf5', 'r')
 test_data = f.get('input')
 test_label = f.get('label')
@@ -65,7 +68,7 @@ sess = tf.Session()
 sess.run(tf.global_variables_initializer())
 
 # load vgg weights
-print "Initialize VGG network ... "
+print("Initialize VGG network ... ")
 weights = np.load('vgg19.npy', encoding='latin1').item()
 keys = sorted(weights.keys())
 layers = ['conv1_1', 'conv1_2', 'conv2_1', 'conv2_2',
@@ -74,7 +77,7 @@ layers = ['conv1_1', 'conv1_2', 'conv2_1', 'conv2_2',
         'conv5_1', 'conv5_2', 'conv5_3', 'conv5_4']
 
 for i, k in enumerate(layers):
-    print i, k, weights[k][0].shape, weights[k][1].shape
+    print(i, k, weights[k][0].shape, weights[k][1].shape)
     sess.run(vgg_params[2*i].assign(weights[k][0]))
     sess.run(vgg_params[2*i+1].assign(weights[k][1]))
 
@@ -83,7 +86,7 @@ num_batches = data.shape[0] // batch_size
 saver = tf.train.Saver()
 
 
-print "Start training ... "
+print("Start training ... ")
 for iteration in range(num_epoch):
 
     i = 0
