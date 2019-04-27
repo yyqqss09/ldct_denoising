@@ -31,7 +31,7 @@ python train_wgan.py
 
 ## Contact
 
-yangq4 at rpi dot edu
+Email: qs dot yang18 at gmail dot com 
 
 Any discussions, suggestions and questions are welcome!
 
@@ -42,7 +42,7 @@ Any discussions, suggestions and questions are welcome!
 @article{ldct_wgan_perceptual_loss,
   author={Q. Yang and P. Yan and Y. Zhang and H. Yu and Y. Shi and X. Mou and M. K. Kalra and Y. Zhang and L. Sun and G. Wang},
   journal={IEEE Transactions on Medical Imaging},
-  title={Low Dose CT Image Denoising Using a Generative Adversarial Network with Wasserstein Distance and Perceptual Loss},
+  title={Low Dose {CT} Image Denoising Using a Generative Adversarial Network with Wasserstein Distance and Perceptual Loss},
   year={2018},
   volume={37},
   number={6},
