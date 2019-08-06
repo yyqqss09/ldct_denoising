@@ -20,7 +20,7 @@ Here N, W, and H are number, depth, width, and height of the input data, respect
 
 ### Pre-trained VGG model
 
-Please also download the pre-trained VGG model from [here](https://mega.nz/1a61c789-50d3-42f8-92af-09f89e3a152e).
+Please also download the pre-trained VGG model from [here](https://github.com/machrisaa/tensorflow-vgg).
 
 ### Training network
 ```
